@@ -20,7 +20,7 @@ public class KiteWebApp {
 
 	@Test
 	public void run() throws InterruptedException {
-		for (int j = 1; j < 1125; j++) {
+		for (int j = 1; j <=1; j++) {
 			fn_LimitmtCheck();
 			fn_TotalOrderCheck();
 			fn_ProfitCheck();
@@ -31,7 +31,7 @@ public class KiteWebApp {
 	public void fn_LimitmtCheck() throws InterruptedException {
 		try {
 			if (driver == null) {
-				System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver_111.exe");
+				System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver_109.exe");
 				ChromeOptions ops = new ChromeOptions();
 				ops.addArguments("--remote-allow-origins=*");
 				ops.addArguments("--disable-notifications");
@@ -39,8 +39,8 @@ public class KiteWebApp {
 				driver = new ChromeDriver(ops);
 				driver.navigate().to("https://kite.zerodha.com/");
 				driver.manage().window().maximize();
-				driver.findElement(By.id("userid")).sendKeys("mu8716");
-				driver.findElement(By.id("password")).sendKeys("zerodha123");
+				driver.findElement(By.id("userid")).sendKeys("xb5025");
+				driver.findElement(By.id("password")).sendKeys("Aaruthran@2018");
 				driver.findElement(By.xpath("//button[@type='submit']")).click();
 				Thread.sleep(10000);
 			}
