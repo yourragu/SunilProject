@@ -31,7 +31,7 @@ public class KiteWebApp {
 	public void fn_LimitmtCheck() throws InterruptedException {
 		try {
 			if (driver == null) {
-				System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver_111.exe");
 				ChromeOptions ops = new ChromeOptions();
 				ops.addArguments("--remote-allow-origins=*");
 				ops.addArguments("--disable-notifications");
@@ -39,12 +39,10 @@ public class KiteWebApp {
 				driver = new ChromeDriver(ops);
 				driver.navigate().to("https://kite.zerodha.com/");
 				driver.manage().window().maximize();
-				// driver.findElement(By.id("userid")).sendKeys("mu8716");
-				// driver.findElement(By.id("password")).sendKeys("zerodha123");
-				driver.findElement(By.id("userid")).sendKeys("xb5025");
-				driver.findElement(By.id("password")).sendKeys("Aaruthran@2018");
+				driver.findElement(By.id("userid")).sendKeys("mu8716");
+				driver.findElement(By.id("password")).sendKeys("zerodha123");
 				driver.findElement(By.xpath("//button[@type='submit']")).click();
-				Thread.sleep(15000);
+				Thread.sleep(10000);
 			}
 
 			driver.findElement(By.xpath("//span[text()='Positions']")).click();
@@ -79,7 +77,6 @@ public class KiteWebApp {
 						Thread.sleep(2000);
 						// driver.findElement(By.xpath("//button[contains(text(),'Continue')]")).click();
 						driver.close();
-
 					}
 				}
 				Set<String> tWin = driver.getWindowHandles();
@@ -100,9 +97,7 @@ public class KiteWebApp {
 		try {
 			driver.findElement(By.xpath("//span[text()='Orders']")).click();
 			Thread.sleep(3000);
-
 			List<WebElement> lstElemnt = driver.findElements(By.xpath("//div[@class='page-nav']/a"));
-
 			System.out.println("fn_TotalOrderCheck >> Total menu's:" + lstElemnt.size());
 			for (int i = 1; i <= lstElemnt.size(); i++) {
 				if (driver.findElement(By.xpath("(//div[@class='page-nav']/a)[" + i + "]")).getText()
