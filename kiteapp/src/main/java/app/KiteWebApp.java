@@ -12,15 +12,18 @@ import org.testng.annotations.Test;
 public class KiteWebApp {
 
 	public ChromeDriver driver = null;
+	static String value1, value2;
 	static int trade1 = 1;
 	String spltAmt[];
-	String Amount, profitAmt;
+	String Amount = " ", profitAmt = " ";
 	float MaxLoss_Deduction;
 	static float tempVar = 0;
 
 	@Test
 	public void run() throws InterruptedException {
-		for (int j = 1; j <=1; j++) {
+		for (int j = 1; j <= 1125; j++) {
+			value1 = " ";
+			value2 = " ";
 			fn_LimitmtCheck();
 			fn_TotalOrderCheck();
 			fn_ProfitCheck();
@@ -31,7 +34,9 @@ public class KiteWebApp {
 	public void fn_LimitmtCheck() throws InterruptedException {
 		try {
 			if (driver == null) {
-				System.setProperty("webdriver.chrome.driver", "./drivers/chromedriver_109.exe");
+				// System.setProperty("webdriver.chrome.driver",
+				// "C:/Sunil_Project/chromedriver_111.exe");
+				System.setProperty("webdriver.chrome.driver", "D:/Sunil_Project/chromedriver_109.exe");
 				ChromeOptions ops = new ChromeOptions();
 				ops.addArguments("--remote-allow-origins=*");
 				ops.addArguments("--disable-notifications");
@@ -41,6 +46,8 @@ public class KiteWebApp {
 				driver.manage().window().maximize();
 				driver.findElement(By.id("userid")).sendKeys("xb5025");
 				driver.findElement(By.id("password")).sendKeys("Aaruthran@2018");
+				// driver.findElement(By.id("userid")).sendKeys("mu8716");
+				// driver.findElement(By.id("password")).sendKeys("zerodha123");
 				driver.findElement(By.xpath("//button[@type='submit']")).click();
 				Thread.sleep(10000);
 			}
@@ -48,7 +55,11 @@ public class KiteWebApp {
 			driver.findElement(By.xpath("//span[text()='Positions']")).click();
 			Thread.sleep(2000);
 			Amount = driver.findElement(By.xpath("(//table[tbody])[1]/tfoot[1]/tr[1]/td[4]")).getText();
-			if (Float.parseFloat(Amount) <= 10000) {
+			String[] arrSplit = Amount.split(",");
+			for (int i = 0; i < arrSplit.length; i++) {
+				value1 = value1 + arrSplit[i];
+			}
+			if (Double.parseDouble(value1) <= -10000) {
 				driver.findElement(By.xpath("(//table[tbody])[1]/thead/tr/th//label/span")).click();
 				Thread.sleep(2000);
 				driver.findElement(By.xpath("//button[@type='button']")).click();
@@ -58,12 +69,10 @@ public class KiteWebApp {
 				driver.findElement(By.xpath("//span[@class='user-id']")).click();
 				driver.findElement(By.xpath("//*[text()=' Console']")).click();
 				Thread.sleep(3000);
-
 				Set<String> TotalWindows = driver.getWindowHandles();
 				for (String window : TotalWindows) {
 					driver.switchTo().window(window);
 					System.out.println("fn_LimitmtCheck >> Title of the page:" + driver.getTitle());
-
 					if (driver.getTitle().contentEquals("Dashboard / Console")) {
 						driver.findElement(By.xpath("//span[text()='Account']")).click();
 						Thread.sleep(2000);
@@ -75,7 +84,7 @@ public class KiteWebApp {
 						Thread.sleep(2000);
 						driver.findElement(By.xpath("//label[@for='NSE_FO']")).click();
 						Thread.sleep(2000);
-						// driver.findElement(By.xpath("//button[contains(text(),'Continue')]")).click();
+						driver.findElement(By.xpath("//button[contains(text(),'Continue')]")).click();
 						driver.close();
 					}
 				}
@@ -91,6 +100,7 @@ public class KiteWebApp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public void fn_TotalOrderCheck() throws InterruptedException {
@@ -126,7 +136,6 @@ public class KiteWebApp {
 				driver.findElement(By.xpath("//span[@class='user-id']")).click();
 				driver.findElement(By.xpath("//*[text()=' Console']")).click();
 				Thread.sleep(3000);
-
 				Set<String> TotalWindows = driver.getWindowHandles();
 				for (String window : TotalWindows) {
 					driver.switchTo().window(window);
@@ -143,7 +152,7 @@ public class KiteWebApp {
 						Thread.sleep(2000);
 						driver.findElement(By.xpath("//label[@for='NSE_FO']")).click();
 						Thread.sleep(2000);
-						// driver.findElement(By.xpath("//button[contains(text(),'Continue')]")).click();
+						driver.findElement(By.xpath("//button[contains(text(),'Continue')]")).click();
 						driver.close();
 
 					}
@@ -167,54 +176,58 @@ public class KiteWebApp {
 			driver.findElement(By.xpath("//span[text()='Positions']")).click();
 			Thread.sleep(2000);
 			profitAmt = driver.findElement(By.xpath("(//table[tbody])[1]/tfoot[1]/tr[1]/td[4]")).getText();
-			Thread.sleep(2000);
-			if (tempVar < Float.parseFloat(profitAmt)) {
-				tempVar = Float.parseFloat(profitAmt);
+			String[] splitVal = profitAmt.split(",");
+			for (int j = 0; j < splitVal.length; j++) {
+				value2 = value2 + splitVal[j];
 			}
 			Thread.sleep(2000);
-			MaxLoss_Deduction = tempVar - 5000;
-			System.out.println("fn_ProfitCheck >> After Deduction : " + MaxLoss_Deduction);
-			Thread.sleep(2000);
-			if (Float.parseFloat(profitAmt) < MaxLoss_Deduction) {
-				driver.findElement(By.xpath("(//table[tbody])[1]/thead/tr/th//label/span")).click();
-				Thread.sleep(2000);
-				driver.findElement(By.xpath("//button[@type='button']")).click();
-				Thread.sleep(2000);
-				driver.findElement(By.xpath("//span[text()='Exit']")).click();
-				Thread.sleep(2000);
-				driver.findElement(By.xpath("//span[@class='user-id']")).click();
-				driver.findElement(By.xpath("//*[text()=' Console']")).click();
-				Thread.sleep(3000);
-
-				Set<String> TotalWindows = driver.getWindowHandles();
-				for (String window : TotalWindows) {
-					driver.switchTo().window(window);
-					System.out.println("fn_LimitmtCheck >> Title of the page:" + driver.getTitle());
-
-					if (driver.getTitle().contentEquals("Dashboard / Console")) {
-						driver.findElement(By.xpath("//span[text()='Account']")).click();
-						Thread.sleep(2000);
-						driver.findElement(By.xpath("//div[text()='Segments']")).click();
-						Thread.sleep(2000);
-						driver.findElement(By.xpath("//label[@for='NSE_EQ']")).click();
-						Thread.sleep(2000);
-						driver.findElement(By.xpath("//label[@for='BSE_EQ']")).click();
-						Thread.sleep(2000);
-						driver.findElement(By.xpath("//label[@for='NSE_FO']")).click();
-						Thread.sleep(2000);
-						// driver.findElement(By.xpath("//button[contains(text(),'Continue')]")).click();
-						driver.close();
-
-					}
+			if (Float.parseFloat(value2) >= 10000) {
+				if (tempVar < Float.parseFloat(value2)) {
+					tempVar = Float.parseFloat(value2);
 				}
-				Set<String> tWin = driver.getWindowHandles();
-				for (String win : tWin) {
-					driver.switchTo().window(win);
-					if (driver.getTitle().contentEquals("Positions / Kite")) {
-						break;
-					}
-				}
+				Thread.sleep(2000);
+				MaxLoss_Deduction = tempVar - 5000;
+				System.out.println("fn_ProfitCheck >> After Deduction : " + MaxLoss_Deduction);
+				Thread.sleep(2000);
+				if (Float.parseFloat(value2) < MaxLoss_Deduction) {
+					driver.findElement(By.xpath("(//table[tbody])[1]/thead/tr/th//label/span")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//button[@type='button']")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//span[text()='Exit']")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//span[@class='user-id']")).click();
+					driver.findElement(By.xpath("//*[text()=' Console']")).click();
+					Thread.sleep(3000);
+					Set<String> TotalWindows = driver.getWindowHandles();
+					for (String window : TotalWindows) {
+						driver.switchTo().window(window);
+						System.out.println("fn_LimitmtCheck >> Title of the page:" + driver.getTitle());
+						if (driver.getTitle().contentEquals("Dashboard / Console")) {
+							driver.findElement(By.xpath("//span[text()='Account']")).click();
+							Thread.sleep(2000);
+							driver.findElement(By.xpath("//div[text()='Segments']")).click();
+							Thread.sleep(2000);
+							driver.findElement(By.xpath("//label[@for='NSE_EQ']")).click();
+							Thread.sleep(2000);
+							driver.findElement(By.xpath("//label[@for='BSE_EQ']")).click();
+							Thread.sleep(2000);
+							driver.findElement(By.xpath("//label[@for='NSE_FO']")).click();
+							Thread.sleep(2000);
+							driver.findElement(By.xpath("//button[contains(text(),'Continue')]")).click();
+							driver.close();
 
+						}
+					}
+					Set<String> tWin = driver.getWindowHandles();
+					for (String win : tWin) {
+						driver.switchTo().window(win);
+						if (driver.getTitle().contentEquals("Positions / Kite")) {
+							break;
+						}
+					}
+
+				}
 			}
 
 		} catch (Exception e) {
